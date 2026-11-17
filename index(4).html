@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#315c55">
+<title>AZNOO | رزرو وقت مشاوره</title>
+<style>
+:root{--green:#315c55;--mint:#e8f1ed;--cream:#fbf8f2;--ink:#263632;--muted:#687772;--gold:#c49a62}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--cream);color:var(--ink);line-height:1.9}
+header{background:linear-gradient(135deg,#244b45,#47786c);color:white;padding:34px 18px 48px;text-align:center}
+header .mark{font-size:34px}header h1{font-size:32px;margin:4px 0}header p{margin:0;color:#e5efeb}
+main{max-width:900px;margin:-22px auto 40px;padding:0 16px}.card{background:white;border-radius:22px;padding:25px;box-shadow:0 12px 35px #203b3012;margin-bottom:18px}
+h2{font-size:21px;color:var(--green);margin:0 0 12px}.intro{text-align:center}.intro p{color:var(--muted);margin:4px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:flex;flex-direction:column;gap:5px;margin-bottom:13px}label{font-weight:bold;font-size:14px}
+input,select,textarea{font:inherit;border:1px solid #d9e2dd;border-radius:11px;padding:11px 12px;background:#fff;color:var(--ink);width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid #b6d2c8;border-color:var(--green)}
+button{border:0;border-radius:12px;padding:13px 20px;font:inherit;font-weight:bold;cursor:pointer;background:var(--green);color:white;width:100%}
+button:hover{filter:brightness(1.08)}.hint{font-size:12px;color:var(--muted)}.slots{display:flex;gap:8px;flex-wrap:wrap}.slot{width:auto;background:var(--mint);color:var(--green);border:1px solid #d5e5dd;padding:7px 14px}.slot.selected{background:var(--green);color:white}
+.notice{background:var(--mint);border-radius:12px;padding:12px 15px;color:#315c55;font-size:14px}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:5px 15px 30px}a{color:inherit}
+@media(max-width:620px){.grid{grid-template-columns:1fr}header h1{font-size:27px}.card{padding:19px}}
+</style>
+</head>
+<body>
+<header><div class="mark">☘</div><h1>AZNOO</h1><p>با پریسا ایمانی | مشاوره حضوری و آنلاین</p></header>
+<main>
+<section class="card intro"><h2>اینجا جایی برای شنیده‌شدن، درک‌شدن و آرام‌گرفتن است</h2><p>برای ثبت درخواست جلسه مشاوره، فرم زیر را تکمیل کنید.</p><p>هر جلسه ۶۰ دقیقه است و رزرو پس از تأیید مشاور قطعی می‌شود.</p></section>
+<section class="card">
+<h2>درخواست نوبت مشاوره</h2>
+<form id="booking">
+<div class="grid">
+<div class="field"><label for="name">نام و نام خانوادگی *</label><input id="name" required autocomplete="name" placeholder="نام شما"></div>
+<div class="field"><label for="phone">شماره موبایل *</label><input id="phone" required inputmode="tel" autocomplete="tel" placeholder="09xxxxxxxxx"></div>
+<div class="field"><label for="mode">نوع مشاوره *</label><select id="mode" required><option value="">انتخاب کنید</option><option>حضوری</option><option>آنلاین</option></select></div>
+<div class="field"><label for="date">تاریخ موردنظر *</label><input id="date" type="date" required><span class="hint">فقط روزهای شنبه، دوشنبه و پنج‌شنبه فعال هستند.</span></div>
+</div>
+<div class="field"><label>ساعت‌های قابل انتخاب *</label><div id="slots" class="slots"><span class="hint">ابتدا تاریخ را انتخاب کنید.</span></div></div>
+<div class="field"><label for="topic">موضوع مشاوره (اختیاری)</label><textarea id="topic" rows="3" placeholder="در صورت تمایل، موضوع کلی را بنویسید. لطفاً اطلاعات بسیار خصوصی یا حساس وارد نکنید."></textarea></div>
+<div class="notice">ثبت این فرم به معنی رزرو قطعی نیست. درخواست شما برای بررسی و تأیید به مشاور ارسال می‌شود.</div>
+<br><button type="submit">ارسال درخواست از طریق واتساپ</button>
+</form>
+</section>
+<section class="card"><h2>راه ارتباطی</h2><p>برای پرسش یا پیگیری با شماره زیر در تماس باشید:</p><p><strong dir="ltr">09118113095</strong></p><a href="https://wa.me/989118113095" target="_blank" rel="noopener">گفت‌وگو در واتساپ</a></section>
+</main>
+<footer>© AZNOO — پریسا ایمانی</footer>
+<script>
+const dateInput=document.getElementById('date'), slotsBox=document.getElementById('slots');
+let chosen='';
+const schedule={6:['09:00','10:00'],1:['14:00','15:00','16:00','17:00'],4:['09:00','10:00','14:00','15:00','16:00','17:00']};
+const today=new Date(); const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);dateInput.min=localToday;
+dateInput.addEventListener('change',()=>{
+ chosen='';slotsBox.innerHTML='';
+ if(!dateInput.value)return;
+ const day=new Date(dateInput.value+'T12:00:00').getDay(), times=schedule[day];
+ if(!times){slotsBox.innerHTML='<span class="hint">برای این روز نوبتی تعریف نشده است. شنبه، دوشنبه یا پنج‌شنبه را انتخاب کنید.</span>';return;}
+ times.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='slot';b.textContent=t;b.onclick=()=>{chosen=t;document.querySelectorAll('.slot').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')};slotsBox.appendChild(b)});
+});
+document.getElementById('booking').addEventListener('submit',e=>{
+ e.preventDefault();
+ const name=document.getElementById('name').value.trim(),phone=document.getElementById('phone').value.trim(),mode=document.getElementById('mode').value,topic=document.getElementById('topic').value.trim();
+ if(!chosen){alert('لطفاً یک ساعت انتخاب کنید.');return;}
+ if(!/^09\d{9}$/.test(phone)){alert('شماره موبایل را به شکل 09xxxxxxxxx وارد کنید.');return;}
+ const msg=`سلام، برای مشاوره در AZNOO درخواست نوبت دارم.%0Aنام: ${encodeURIComponent(name)}%0Aموبایل: ${encodeURIComponent(phone)}%0Aنوع مشاوره: ${encodeURIComponent(mode)}%0Aتاریخ: ${encodeURIComponent(dateInput.value)}%0Aساعت: ${encodeURIComponent(chosen)}%0Aموضوع: ${encodeURIComponent(topic||'ذکر نشده')}%0Aلطفاً درخواست را بررسی و تأیید بفرمایید.`;
+ window.open('https://wa.me/989118113095?text='+msg,'_blank','noopener');
+});
+</script>
+</body></html>
